@@ -79,7 +79,7 @@ with open(f"{feature_name}/cache.pkl", "rb") as handle:
 # Change oreilly-class/cifar to <entity/project-name>
 runs = api.runs(args.wandb_project)
 data = []
-for idx, run in enumerate(runs):
+for run in runs:
     if run.id not in ids:
         ids.add(run.id)
         if args.feature_of_interest in run.summary:
@@ -122,7 +122,7 @@ print("data loaded")
 # https://stackoverflow.com/questions/42281844/what-is-the-mathematics-behind-the-smoothing-parameter-in-tensorboards-scalar#_=_
 def smooth(scalars, weight):  # Weight between 0 and 1
     last = scalars[0]  # First value in the plot (first timestep)
-    smoothed = list()
+    smoothed = []
     for point in scalars:
         smoothed_val = last * weight + (1 - weight) * point  # Calculate smoothed value
         smoothed.append(smoothed_val)  # Save it

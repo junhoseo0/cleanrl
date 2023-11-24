@@ -45,8 +45,8 @@ api = wandb.Api()
 
 # Project is specified by <entity/project-name>
 runs = api.runs(args.wandb_project)
-run_ids = []
 final_run_cmds = []
+run_ids = []
 for run in runs:
     if run.state == args.run_state:
         run_ids += [run.path[-1]]
@@ -54,7 +54,7 @@ for run in runs:
         final_run_cmds += [["python", metadata["program"]] + metadata["args"]]
         if args.upload_files_baseurl:
             file_name = final_run_cmds[-1][1]
-            link = args.upload_files_baseurl + "/" + file_name
+            link = f"{args.upload_files_baseurl}/{file_name}"
             final_run_cmds[-1] = ["curl", "-O", link, ";"] + final_run_cmds[-1]
 
 if not args.wandb_key:
@@ -69,8 +69,7 @@ if not args.submit_aws:
     current_core = 0
     for run_id, final_run_cmd in zip(run_ids, final_run_cmds):
         print(
-            f'docker run -d --cpuset-cpus="{current_core}" -e WANDB={wandb_key} -e WANDB_RESUME=must -e WANDB_RUN_ID={run_id} {args.docker_repo} '
-            + '/bin/bash -c "'
+            f'docker run -d --cpuset-cpus="{current_core}" -e WANDB={wandb_key} -e WANDB_RESUME=must -e WANDB_RUN_ID={run_id} {args.docker_repo} /bin/bash -c "'
             + " ".join(final_run_cmd)
             + '"'
         )

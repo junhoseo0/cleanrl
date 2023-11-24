@@ -64,7 +64,7 @@ class Tuner:
         self.sampler = sampler
         self.storage = storage
         self.study_name = study_name
-        if len(self.study_name) == 0:
+        if not self.study_name:
             self.study_name = f"tuner_{int(time.time())}"
         self.wandb_kwargs = wandb_kwargs
 

@@ -48,14 +48,13 @@ class SegmentTree:
         mid = (node_start + node_end) // 2
         if end <= mid:
             return self._reduce_helper(start, end, 2 * node, node_start, mid)
+        if mid + 1 <= start:
+            return self._reduce_helper(start, end, 2 * node + 1, mid + 1, node_end)
         else:
-            if mid + 1 <= start:
-                return self._reduce_helper(start, end, 2 * node + 1, mid + 1, node_end)
-            else:
-                return self._operation(
-                    self._reduce_helper(start, mid, 2 * node, node_start, mid),
-                    self._reduce_helper(mid + 1, end, 2 * node + 1, mid + 1, node_end),
-                )
+            return self._operation(
+                self._reduce_helper(start, mid, 2 * node, node_start, mid),
+                self._reduce_helper(mid + 1, end, 2 * node + 1, mid + 1, node_end),
+            )
 
     def reduce(self, start=0, end=None):
         """
@@ -242,9 +241,7 @@ class BaseBuffer(ABC):
         """
         :return: The current size of the buffer
         """
-        if self.full:
-            return self.buffer_size
-        return self.pos
+        return self.buffer_size if self.full else self.pos
 
     def add(self, *args, **kwargs) -> None:
         """
@@ -307,9 +304,7 @@ class BaseBuffer(ABC):
     def _normalize_obs(
         obs: Union[np.ndarray, Dict[str, np.ndarray]], env: Optional[VecNormalize] = None
     ) -> Union[np.ndarray, Dict[str, np.ndarray]]:
-        if env is not None:
-            return env.normalize_obs(obs)
-        return obs
+        return env.normalize_obs(obs) if env is not None else obs
 
     @staticmethod
     def _normalize_reward(reward: np.ndarray, env: Optional[VecNormalize] = None) -> np.ndarray:
@@ -644,15 +639,13 @@ class PrioritizedReplayBuffer(BaseBuffer):
     def _get_samples(self, batch_inds: np.ndarray, env: Optional[VecNormalize] = None) -> PrioritizedReplayBufferSamples:
         next_obs = self._normalize_obs(self.next_observations[batch_inds, 0, :], env)
 
-        data = (
+        return (
             self._normalize_obs(self.observations[batch_inds, 0, :], env),
             self.actions[batch_inds, 0, :],
             next_obs,
             self.dones[batch_inds],
             self._normalize_reward(self.rewards[batch_inds], env),
         )
-
-        return data
 
     def sample(self, batch_size: int, beta: float, env: Optional[VecNormalize] = None) -> ReplayBufferSamples:
         """

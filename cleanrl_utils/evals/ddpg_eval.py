@@ -59,7 +59,7 @@ if __name__ == "__main__":
         make_env,
         "HalfCheetah-v4",
         eval_episodes=10,
-        run_name=f"eval",
+        run_name="eval",
         Model=(Actor, QNetwork),
         device="cpu",
         capture_video=False,

@@ -294,7 +294,7 @@ if __name__ == "__main__":
         envinds = np.arange(args.num_envs)
         flatinds = np.arange(args.batch_size).reshape(args.num_steps, args.num_envs)
         clipfracs = []
-        for epoch in range(args.update_epochs):
+        for _ in range(args.update_epochs):
             np.random.shuffle(envinds)
             for start in range(0, args.num_envs, envsperbatch):
                 end = start + envsperbatch

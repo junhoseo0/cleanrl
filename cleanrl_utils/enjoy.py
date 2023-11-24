@@ -23,9 +23,7 @@ def parse_args():
         help="the number of evaluation episodes")
     parser.add_argument("--capture-video", type=lambda x: bool(strtobool(x)), default=False, nargs="?", const=True,
         help="whether to capture videos of the agent performances (check out `videos` folder)")
-    args = parser.parse_args()
-    # fmt: on
-    return args
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
@@ -40,7 +38,7 @@ if __name__ == "__main__":
         make_env,
         args.env_id,
         eval_episodes=args.eval_episodes,
-        run_name=f"eval",
+        run_name="eval",
         Model=Model,
         capture_video=args.capture_video,
     )

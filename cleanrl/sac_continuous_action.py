@@ -64,9 +64,7 @@ def parse_args():
             help="Entropy regularization coefficient.")
     parser.add_argument("--autotune", type=lambda x:bool(strtobool(x)), default=True, nargs="?", const=True,
         help="automatic tuning of the entropy coefficient")
-    args = parser.parse_args()
-    # fmt: on
-    return args
+    return parser.parse_args()
 
 
 def make_env(env_id, seed, idx, capture_video, run_name):

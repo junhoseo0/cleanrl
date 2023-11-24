@@ -63,20 +63,16 @@ if not args.wandb_key:
         pass
 assert len(args.wandb_key) > 0, "you have not logged into W&B; try do `wandb login`"
 
-# extract runs from bash scripts
-final_run_cmds = []
-for seed in range(1, 1 + args.num_seed):
-    final_run_cmds += [args.command + " --seed " + str(seed)]
-
+final_run_cmds = [
+    f"{args.command} --seed {str(seed)}"
+    for seed in range(1, 1 + args.num_seed)
+]
 final_str = ""
 cores = multiprocessing.cpu_count()
 current_core = 0
 for final_run_cmd in final_run_cmds:
     run_command = (
-        f'docker run -d --cpuset-cpus="{current_core}" -e WANDB_API_KEY={args.wandb_key} {args.docker_tag} '
-        + '/bin/bash -c "'
-        + final_run_cmd
-        + '"'
+        f'docker run -d --cpuset-cpus="{current_core}" -e WANDB_API_KEY={args.wandb_key} {args.docker_tag} /bin/bash -c "{final_run_cmd}"'
         + "\n"
     )
     print(run_command)

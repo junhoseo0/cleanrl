@@ -65,7 +65,7 @@ if __name__ == "__main__":
         make_env,
         "CartPole-v1",
         eval_episodes=10,
-        run_name=f"eval",
+        run_name="eval",
         Model=QNetwork,
         capture_video=False,
     )

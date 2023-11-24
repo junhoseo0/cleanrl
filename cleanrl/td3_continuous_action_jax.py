@@ -59,9 +59,7 @@ def parse_args():
         help="the frequency of training policy (delayed)")
     parser.add_argument("--noise-clip", type=float, default=0.5,
         help="noise clip parameter of the Target Policy Smoothing Regularization")
-    args = parser.parse_args()
-    # fmt: on
-    return args
+    return parser.parse_args()
 
 
 def make_env(env_id, seed, idx, capture_video, run_name):

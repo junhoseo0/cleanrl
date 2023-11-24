@@ -222,10 +222,16 @@ if __name__ == "__main__":
         seed=args.seed,
         task=args.env_id,
         num_envs=args.num_envs,
-        sim_device="cuda:0" if torch.cuda.is_available() and args.cuda else "cpu",
-        rl_device="cuda:0" if torch.cuda.is_available() and args.cuda else "cpu",
-        graphics_device_id=0 if torch.cuda.is_available() and args.cuda else -1,
-        headless=False if torch.cuda.is_available() and args.cuda else True,
+        sim_device="cuda:0"
+        if torch.cuda.is_available() and args.cuda
+        else "cpu",
+        rl_device="cuda:0"
+        if torch.cuda.is_available() and args.cuda
+        else "cpu",
+        graphics_device_id=0
+        if torch.cuda.is_available() and args.cuda
+        else -1,
+        headless=not torch.cuda.is_available() or not args.cuda,
         multi_gpu=False,
         virtual_screen_capture=args.capture_video,
         force_render=False,
@@ -324,7 +330,7 @@ if __name__ == "__main__":
 
         # Optimizing the policy and value network
         clipfracs = []
-        for epoch in range(args.update_epochs):
+        for _ in range(args.update_epochs):
             b_inds = torch.randperm(args.batch_size, device=device)
             for start in range(0, args.batch_size, args.minibatch_size):
                 end = start + args.minibatch_size

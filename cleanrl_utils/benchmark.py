@@ -22,9 +22,7 @@ def parse_args():
         help="the number of workers to run benchmark experimenets")
     parser.add_argument("--auto-tag", type=lambda x: bool(strtobool(x)), default=True, nargs="?", const=True,
         help="if toggled, the runs will be tagged with git tags, commit, and pull request number if possible")
-    args = parser.parse_args()
-    # fmt: on
-    return args
+    return parser.parse_args()
 
 
 def run_experiment(command: str):

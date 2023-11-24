@@ -234,10 +234,7 @@ class RewardForwardFilter:
         self.gamma = gamma
 
     def update(self, rews):
-        if self.rewems is None:
-            self.rewems = rews
-        else:
-            self.rewems = self.rewems * self.gamma + rews
+        self.rewems = rews if self.rewems is None else self.rewems * self.gamma + rews
         return self.rewems
 
 

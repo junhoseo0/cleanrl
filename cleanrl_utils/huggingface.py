@@ -85,14 +85,15 @@ python {algorithm_variant_filename} {" ".join(sys.argv[1:])}
     readme = model_card
 
     # metadata
-    metadata = {}
-    metadata["tags"] = [
-        args.env_id,
-        "deep-reinforcement-learning",
-        "reinforcement-learning",
-        "custom-implementation",
-    ]
-    metadata["library_name"] = "cleanrl"
+    metadata = {
+        "tags": [
+            args.env_id,
+            "deep-reinforcement-learning",
+            "reinforcement-learning",
+            "custom-implementation",
+        ],
+        "library_name": "cleanrl",
+    }
     eval = metadata_eval_result(
         model_pretty_name=algo_name,
         task_pretty_name="reinforcement-learning",

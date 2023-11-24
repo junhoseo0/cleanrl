@@ -72,9 +72,7 @@ def parse_args():
         help="automatic tuning of the entropy coefficient")
     parser.add_argument("--target-entropy-scale", type=float, default=0.89,
         help="coefficient for scaling the autotune entropy target")
-    args = parser.parse_args()
-    # fmt: on
-    return args
+    return parser.parse_args()
 
 
 def make_env(env_id, seed, idx, capture_video, run_name):
@@ -133,8 +131,7 @@ class SoftQNetwork(nn.Module):
     def forward(self, x):
         x = F.relu(self.conv(x / 255.0))
         x = F.relu(self.fc1(x))
-        q_vals = self.fc_q(x)
-        return q_vals
+        return self.fc_q(x)
 
 
 class Actor(nn.Module):
@@ -159,9 +156,7 @@ class Actor(nn.Module):
     def forward(self, x):
         x = F.relu(self.conv(x))
         x = F.relu(self.fc1(x))
-        logits = self.fc_logits(x)
-
-        return logits
+        return self.fc_logits(x)
 
     def get_action(self, x):
         logits = self(x / 255.0)

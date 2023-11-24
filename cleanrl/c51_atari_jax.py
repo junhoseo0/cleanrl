@@ -261,8 +261,7 @@ poetry run pip install "stable_baselines3==2.0.0a1" "gymnasium[atari,accept-rom-
     def get_action(q_state, obs):
         pmfs = q_network.apply(q_state.params, obs)
         q_vals = (pmfs * q_state.atoms).sum(axis=-1)
-        actions = q_vals.argmax(axis=-1)
-        return actions
+        return q_vals.argmax(axis=-1)
 
     start_time = time.time()
 
